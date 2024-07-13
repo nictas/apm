@@ -1,14 +1,15 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { IStar } from "../shared/star";
 import { IProduct } from "./product";
 import { ProductService } from "./product.service";
+import { Subscription } from "rxjs";
 
 @Component({
     selector: 'pm-products',
     templateUrl: './product-list.component.html',
     styleUrls: ['./product-list.component.css']
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent implements OnInit, OnDestroy {
     pageTitle = "Product List";
     imageWidth = 50;
     imageMargin = 2;
@@ -28,10 +29,17 @@ export class ProductListComponent implements OnInit {
 
     products: IProduct[] = [];
     shownProducts = this.products;
+    productsSubscription!: Subscription;
 
     ngOnInit(): void {
-        this.products = this.productService.getProducts();
-        this.shownProducts = this.products;
+        this.productsSubscription = this.productService.getProducts().subscribe(receivedProducts => {
+            this.products = receivedProducts;
+            this.shownProducts = receivedProducts;
+        });
+    }
+
+    ngOnDestroy(): void {
+        this.productsSubscription.unsubscribe();
     }
 
     toggleImage(): void {
