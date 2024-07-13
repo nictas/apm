@@ -5,8 +5,12 @@ import { Component } from "@angular/core";
     templateUrl: './product-list.component.html'
 })
 export class ProductListComponent {
-    pageTitle: string = "Product List";
-    products: any[] = [
+    pageTitle = "Product List";
+    imageWidth = 50;
+    imageMargin = 2;
+    showImage = false;
+    listFilter = '';
+    products = [
         {
             "productId": 1,
             "productName": "Leaf Rake",
@@ -57,5 +61,9 @@ export class ProductListComponent {
             "starRating": 4.6,
             "imageUrl": "assets/images/xbox-controller.png"
         }
-    ]
+    ];
+
+    toggleImage(): void {
+        this.showImage = !this.showImage;
+    }
 }
