@@ -17,6 +17,7 @@ export class ProductService {
             catchError(this.logError)
         );
     }
+
     private logError(e: HttpErrorResponse) {
         let errorMessage: string;
         if (e.error instanceof ErrorEvent) {
