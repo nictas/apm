@@ -1,0 +1,8 @@
+<div style="width: 75px" (mouseenter)="onMouseEnterArea()" (mouseleave)="onMouseLeaveArea()">
+  <div class="crop" [style.width.px]="cropWidth" [title]="rating">
+    <div style="width: 75px">
+      <span class="fa fa-star" *ngFor="let star of stars" [style.color]="star.color"
+        (mouseenter)="onMouseEnterStar(star)" (mouseleave)="onMouseLeaveStar(star)" (click)="onClickStar(star)"></span>
+    </div>
+  </div>
+</div>

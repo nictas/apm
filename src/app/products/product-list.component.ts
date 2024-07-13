@@ -1,16 +1,29 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import { IProduct } from "./product";
+import { IStar } from "../shared/star";
 
 @Component({
     selector: 'pm-products',
-    templateUrl: './product-list.component.html'
+    templateUrl: './product-list.component.html',
+    styleUrls: ['./product-list.component.css']
 })
-export class ProductListComponent {
+export class ProductListComponent implements OnInit {
     pageTitle = "Product List";
     imageWidth = 50;
     imageMargin = 2;
     showImage = false;
-    listFilter = '';
-    products = [
+
+    private _listFilter = '';
+    get listFilter(): string {
+        return this._listFilter;
+    }
+
+    set listFilter(value: string) {
+        this._listFilter = value;
+        this.onListFilterChange(value);
+    }
+
+    products: IProduct[] = [
         {
             "productId": 1,
             "productName": "Leaf Rake",
@@ -62,8 +75,22 @@ export class ProductListComponent {
             "imageUrl": "assets/images/xbox-controller.png"
         }
     ];
+    shownProducts = this.products;
+
+    ngOnInit(): void {
+        console.log('ngOnInit');
+    }
 
     toggleImage(): void {
         this.showImage = !this.showImage;
+    }
+
+    onListFilterChange(listFilter: string): void {
+        listFilter = listFilter.toLowerCase();
+        this.shownProducts = this.products.filter((product: IProduct) => product.productName.toLowerCase().includes(listFilter));
+    }
+
+    onStarClicked(star: IStar) {
+        this.pageTitle = `You submitted a rating ${star.index}/5. Note that this will have no effect since there's no connected backend.`;
     }
 }
